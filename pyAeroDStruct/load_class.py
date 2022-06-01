@@ -18,7 +18,7 @@ class Load():
         self._M = None
     
     
-    def read_lift(self, load_sheet_name = 'lift_exemple.csv'):
+    def read_lift(self, load_sheet_name = 'lift_exemple.csv', file_type = 'csv', **kwargs):
         '''Read lift distribution along span from an .csv file.
 
             Paramters
@@ -26,6 +26,8 @@ class Load():
             lift_sheet_name: str
                 .csv file name in wich the lift is stored. See file
                 exemple in data directory for file format.
+            **kwargs: dict
+                Input parametes to pd.read_csv
 
             Returns
             -------
@@ -34,9 +36,20 @@ class Load():
             self: Load
                 Object of the Load class.
             '''
-        lift_sheet = pd.read_csv(f'data/load_dir/{load_sheet_name}', sep=';')
-        chord_array = lift_sheet['Lift Load[N/m]'].to_numpy()
-        self._lift = scale_array(chord_array, self._n_step)
+        input_sep = kwargs.get('sep')
+        if load_sheet_name == 'lift_exemple.csv':
+            lift_sheet = pd.read_csv(f'data/load_dir/{load_sheet_name}', sep = input_sep)
+        else:
+            if file_type == 'csv':
+                lift_sheet = pd.read_csv(load_sheet_name, sep = input_sep)
+            if file_type == 'xlsx':
+                lift_sheet = pd.read_excel(load_sheet_name, sep = input_sep)
+            else:
+                raise ValueError(
+                'Please input a .csv or .xlsx file'
+                )     
+        lift_array = lift_sheet['Lift Load[N/m]'].to_numpy()
+        self._lift = scale_array(lift_array, self._n_step)
         return self._lift
 
     def stender_lift(self, MTOW):

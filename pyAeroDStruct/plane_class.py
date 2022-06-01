@@ -30,7 +30,7 @@ class Plane():
 
     @property
     def y(self):
-        '''Creates an array representing y coordenate from the fuselage to wingtip.
+        '''Creates an array representing y coordenate from the wingroot to wingtip.
         
         Parameters
         ----------
@@ -90,24 +90,8 @@ class Plane():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def __repr__(self):
-        repr1 = 'Wing parameters \n'
+        repr1 = 'Air craft parameters \n'
         repr2 = f' Span: {self._b}'
         repr3 = f'\n MTOW: {self._MTOW}'
         return repr1 + repr2 + repr3
@@ -116,5 +100,5 @@ class Plane():
 
 if __name__ == '__main__':
     b = 2.4
-    wing1 = Wing(b)
+    wing1 = Plane(b)
     print(wing1)
